@@ -42,11 +42,13 @@ interface Pagination {
 export const Characters = () => {
   const history = useHistory();
   const queryParams = qs.parse(useLocation().search.slice(1)) as Pagination;
+  const limit = (queryParams.limit && Number(queryParams.limit)) || 100;
+  const page = (queryParams.page && Number(queryParams.page)) || 0;
 
   const [pagination, setPagination] = useState({
-    limit: (queryParams.limit && Number(queryParams.limit)) || 100,
-    skip: (queryParams.skip && Number(queryParams.skip)) || 0,
-    page: (queryParams.page && Number(queryParams.page)) || 0,
+    limit,
+    page,
+    skip: page * limit,
   });
 
   console.log({ queryParams, pagination });
@@ -71,8 +73,8 @@ export const Characters = () => {
   const updateQueryParams = (pagination: Pagination) => {
     const newPagination = { ...queryParams, ...pagination };
     if (Number(newPagination.limit) >= 100) delete newPagination.limit;
-    if (newPagination.skip === "0") delete newPagination.skip;
     if (newPagination.page === "0") delete newPagination.page;
+    delete newPagination.skip;
     history.push({
       pathname: "/characters",
       search: "?" + qs.stringify(newPagination),
