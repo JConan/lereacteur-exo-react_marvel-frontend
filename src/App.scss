@@ -1,0 +1,13 @@
+.App {
+  .Logo {
+    height: 120px;
+    width: 1280px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: center;
+    background-color: #ee171f;
+    img {
+      height: 100%;
+    }
+  }
+}
