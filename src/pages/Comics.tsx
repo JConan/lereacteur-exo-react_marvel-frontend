@@ -2,8 +2,8 @@ import TablePagination from "@material-ui/core/TablePagination";
 import { useDebounce } from "@react-hook/debounce";
 import { useEffect } from "react";
 import { useState } from "react";
-import { getCharacters } from "../api/marvel";
-import { GetCharactersResponse } from "../api/marvel.d";
+import { getComics } from "../api/marvel";
+import { GetComicsResponse } from "../api/marvel.d";
 import notFound from "../assets/images/not_found.png";
 import qs from "qs";
 
@@ -39,7 +39,7 @@ interface Pagination {
   page?: string;
 }
 
-export const Characters = () => {
+export const Comics = () => {
   const history = useHistory();
   const queryParams = qs.parse(useLocation().search.slice(1)) as Pagination;
 
@@ -51,20 +51,20 @@ export const Characters = () => {
 
   console.log({ queryParams, pagination });
 
-  const [characterName, setCharacterName] = useDebounce("", 300);
-  const [characterList, setCharacterList] = useState<
-    GetCharactersResponse | undefined
-  >(undefined);
+  const [title, setTitle] = useDebounce("", 300);
+  const [comicList, setComicList] = useState<GetComicsResponse | undefined>(
+    undefined
+  );
 
   useEffect(() => {
     const params: {
       limit?: number;
       skip?: number;
-      name?: string;
+      title?: string;
     } = { ...pagination };
-    characterName.length > 0 && (params.name = characterName);
-    getCharacters(params).then((data) => setCharacterList(data));
-  }, [pagination, characterName]);
+    title.length > 0 && (params.title = title);
+    getComics(params).then((data) => setComicList(data));
+  }, [pagination, title]);
 
   const classes = useStyles();
 
@@ -74,7 +74,7 @@ export const Characters = () => {
     if (newPagination.skip === "0") delete newPagination.skip;
     if (newPagination.page === "0") delete newPagination.page;
     history.push({
-      pathname: "/characters",
+      pathname: "/comics",
       search: "?" + qs.stringify(newPagination),
     });
   };
@@ -87,24 +87,24 @@ export const Characters = () => {
 
   return (
     <>
-      {!characterList && <Loader />}
-      {characterList && (
+      {!comicList && <Loader />}
+      {comicList && (
         <>
           <div className={classes.root}>
             <ImageList cols={5} rowHeight={180}>
-              {characterList.results.map((character, idx) => (
+              {comicList.comics.map((comic, idx) => (
                 <Tooltip
-                  title={character.description || "no description"}
+                  title={comic.description || "no description"}
                   key={idx}
                 >
                   <ImageListItem>
                     <img
-                      src={getThumbnailURL(character.thumbnail)}
-                      alt={character.name}
+                      src={getThumbnailURL(comic.thumbnail)}
+                      alt={comic.title}
                       style={{ cursor: "pointer" }}
                       loading="lazy"
                     />
-                    <ImageListItemBar title={character.name} />
+                    <ImageListItemBar title={comic.title} />
                   </ImageListItem>
                 </Tooltip>
               ))}
@@ -112,7 +112,7 @@ export const Characters = () => {
           </div>
           <TablePagination
             component="div"
-            count={characterList.count}
+            count={comicList.count}
             page={pagination.page}
             onPageChange={(event, pageNumber) => {
               setPagination({
@@ -141,4 +141,4 @@ export const Characters = () => {
   );
 };
 
-export default Characters;
+export default Comics;

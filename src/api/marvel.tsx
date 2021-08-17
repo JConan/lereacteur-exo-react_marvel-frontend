@@ -6,10 +6,12 @@ export const getComics = (params?: {
   skip?: number;
   title?: string;
 }) =>
-  axios.get<GetComicsResponse>("/comics", {
-    baseURL: process.env.REACT_APP_API_BASEPATH,
-    params,
-  });
+  axios
+    .get<GetComicsResponse>("/comics", {
+      baseURL: process.env.REACT_APP_API_BASEPATH,
+      params,
+    })
+    .then((response) => response.data);
 
 export const getCharacters = (params?: {
   limit?: number;

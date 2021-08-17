@@ -4,7 +4,7 @@ export interface Thumbnail {
 }
 
 export interface Comic {
-  thumbnail: string;
+  thumbnail: Thumbnail;
   _id: string;
   title: string;
   description: string;
