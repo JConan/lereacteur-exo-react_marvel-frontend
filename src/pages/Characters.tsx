@@ -45,8 +45,8 @@ export const Characters = () => {
 
   const [pagination, setPagination] = useState({
     limit: (queryParams.limit && Number(queryParams.limit)) || 100,
-    skip: 0,
-    page: 0,
+    skip: (queryParams.skip && Number(queryParams.skip)) || 0,
+    page: (queryParams.page && Number(queryParams.page)) || 0,
   });
 
   console.log({ queryParams, pagination });
@@ -71,6 +71,8 @@ export const Characters = () => {
   const updateQueryParams = (pagination: Pagination) => {
     const newPagination = { ...queryParams, ...pagination };
     if (Number(newPagination.limit) >= 100) delete newPagination.limit;
+    if (newPagination.skip === "0") delete newPagination.skip;
+    if (newPagination.page === "0") delete newPagination.page;
     history.push({
       pathname: "/characters",
       search: "?" + qs.stringify(newPagination),
@@ -123,6 +125,10 @@ export const Characters = () => {
               page: pageNumber,
               skip: pageNumber * pagination.limit,
               limit: pagination.limit,
+            });
+            updateQueryParams({
+              page: String(pageNumber),
+              skip: String(pageNumber * pagination.limit),
             });
           }}
           rowsPerPage={pagination.limit}
