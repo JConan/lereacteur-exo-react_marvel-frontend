@@ -4,6 +4,7 @@ import Menu from "./components/Menu";
 import { Redirect, Route, Switch } from "react-router-dom";
 import Characters from "./pages/Characters";
 import Comics from "./pages/Comics";
+import CharacterComics from "./pages/CharacterComics";
 
 const Test = (text: string) => () => <div className="sample">{text}</div>;
 
@@ -16,6 +17,7 @@ function App() {
       <Menu />
       <Switch>
         <Route path="/characters" component={Characters} />
+        <Route path="/comics/:characterId" component={CharacterComics} />
         <Route path="/comics" component={Comics} />
         <Route path="/bookmark" component={Test("Bookmark")} />
         <Redirect path="*" to="/characters" />

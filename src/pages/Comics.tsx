@@ -4,7 +4,6 @@ import { useEffect } from "react";
 import { useState } from "react";
 import { getComics } from "../api/marvel";
 import { GetComicsResponse } from "../api/marvel.d";
-import notFound from "../assets/images/not_found.png";
 import qs from "qs";
 
 import { Theme, createStyles, makeStyles } from "@material-ui/core/styles";
@@ -15,6 +14,7 @@ import ImageListItemBar from "@material-ui/core/ImageListItemBar";
 import Tooltip from "@material-ui/core/Tooltip";
 import { useHistory, useLocation } from "react-router-dom";
 import Loader from "../components/Loader";
+import { getThumbnailURL } from "../helpers/tools";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -79,12 +79,6 @@ export const Comics = () => {
       pathname: "/comics",
       search: "?" + qs.stringify(newPagination),
     });
-  };
-
-  const getThumbnailURL = (data: { path: string; extension: string }) => {
-    if (data.path.match(/(image_not_available|4c002e0305708)$/i))
-      return notFound;
-    return data.path + "." + data.extension;
   };
 
   return (

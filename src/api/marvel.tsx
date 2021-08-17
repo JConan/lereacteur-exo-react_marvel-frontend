@@ -1,5 +1,9 @@
 import axios from "axios";
-import { GetComicsResponse, GetCharactersResponse } from "./marvel.d";
+import {
+  GetComicsResponse,
+  GetCharactersResponse,
+  GetCharacterComics,
+} from "./marvel.d";
 
 export const getComics = (params?: {
   limit?: number;
@@ -24,3 +28,11 @@ export const getCharacters = (params?: {
       params,
     })
     .then((response) => response.data);
+
+export const getCharacterComics = (id: string) => {
+  return axios
+    .get<GetCharacterComics>(`/comics/${id}`, {
+      baseURL: process.env.REACT_APP_API_BASEPATH,
+    })
+    .then((response) => response.data);
+};

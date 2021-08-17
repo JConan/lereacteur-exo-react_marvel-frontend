@@ -31,3 +31,12 @@ export interface GetCharactersResponse {
   limit: number;
   results: Character[];
 }
+
+export interface GetCharacterComics {
+  thumbnail: Thumbnail;
+  comics: Comic[];
+  _id: string;
+  name: string;
+  description: string;
+  __v: number;
+}

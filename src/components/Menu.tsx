@@ -18,7 +18,7 @@ export const Menu = () => {
     <Paper className={classes.root}>
       <Tabs
         value={
-          location.pathname === "/comics"
+          location.pathname.match(/^\/comics/)
             ? 1
             : location.pathname === "/bookmark"
             ? 2
