@@ -29,5 +29,5 @@ export interface GetComicsResponse {
 export interface GetCharactersResponse {
   count: number;
   limit: number;
-  characters: Character[];
+  results: Character[];
 }
